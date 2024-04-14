@@ -33,7 +33,7 @@ exports.postAddProduct = (req, res) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
-    const description = req.body.discription;
+    const description = req.body.description;
     const product = new Product({
         title: title,
         price: price,
@@ -96,4 +96,17 @@ exports.postEditProduct = (req, res) => {
                 res.redirect('/');
             });
 
+}
+
+
+
+exports.postDeleteProduct=(req,res)=>{
+    const prodId=req.body.productId;
+
+    Product.findByIdAndRemove(prodId).then(()=>{
+        console.log("Product Removed");
+        res.redirect('/admin/products');
+    }).catch(err=>{
+        console.log(err);
+    })
 }
