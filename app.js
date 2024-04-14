@@ -30,7 +30,7 @@ app.use(shopRouter);
 
 mongoose.connect('mongodb://localhost/Shop')
     .then(result => {
-        app.listen(3000, () => {
+        app.listen(4005, () => {
             console.log('Listening on port 3000');
         });
         
