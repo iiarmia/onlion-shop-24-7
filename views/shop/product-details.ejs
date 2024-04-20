@@ -5,15 +5,15 @@
   <div class="container">
     <div class="centered">
       <div class="card">
-        <h2 class="card-header"></h2>
+        <h2 class="card-header"><%= product.title%></h2>
 
         <div class="card-body">
-          <img src="" alt="" />
+          <img src="<%= product.imageUrl%>" alt="<%= product.imageUrl%>" />
 
           <div class="text-center">
-            <h4 class="card-text"></h4>
+            <h4 class="card-text"><%= product.description%></h4>
             <hr />
-            <h3>ريال</h3>
+            <h3><%= product.price%> $ </h3>
           </div>
         </div>
       </div>
