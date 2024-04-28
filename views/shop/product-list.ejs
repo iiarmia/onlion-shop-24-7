@@ -25,7 +25,7 @@
       </div>
       <div class="card__actions">
         <a href="/products/<%= product._id %>" class="btn btn-light">جزئیات</a>
-        <%- include('../includes/add-to-cart.ejs')  %> 
+        <%- include('../includes/add-to-cart.ejs',{product:product})  %> 
       </div>
     </article>
     <% } %> 
