@@ -1,3 +1,4 @@
+const { path } = require('express/lib/application');
 const Product = require('../models/product');
 
 
@@ -45,8 +46,24 @@ exports.getProduct = (req, res) => {
             console.log(err);
         }
     )
+}
 
+exports.postCart =(req,res)=>{
+  const prodId = req.body.productId
 
+  Product.findById(prodId)
+  .then(product=>{
+   req.user.addTocart(product)
+   res.redirect('/')
+  })
+}
 
+exports.getcart = async (req, res)=>{
+  const userPrducts = await req.user.populate('cart.items.productId')
 
+  res.render('shop/cart',{
+    pageTitle:'cart',
+    path:'/cart',
+    products:userPrducts
+  })
 }
