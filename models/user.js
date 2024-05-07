@@ -32,7 +32,7 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.methods.addTocart = (product)=>{
+userSchema.methods.addTocart = function (product){
     const CartProductIndex = this.cart.items.findIndex(cp=>{
         return cp.productId.toString() === product._id.toString()
     })
@@ -51,7 +51,7 @@ userSchema.methods.addTocart = (product)=>{
         items:updateCartItems
     };
     this.cart = updateCart;
-    return this.Save()
+    return this.save()
 }
 
 module.exports = mongoose.model('User',userSchema)
