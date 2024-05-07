@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 
+const User = require('./models/user')
+
+
 
 const app = express();
 
@@ -12,6 +15,7 @@ app.set('views', 'views');
 
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
+const user = require('./models/user');
 
 
 
@@ -23,13 +27,34 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+ app.use((req,res,next)=>{
+    User.findById('6629203517dd4a62202cb730').then(user=>{
+        req.user=user;
+        next()
+    }).catch(err=>{
+        console.log(err);
+    })
+ })
 app.use('/admin', adminRouter);
 app.use(shopRouter);
 
 
 mongoose.connect('mongodb://localhost/Shop')
     .then(result => {
+  
+        User.findOne().then(user =>{
+            if(!user){
+                const user = new User({
+                    name: 'Max',
+                    email: 'max@max.com',
+                    cart: {
+                        items: []
+                    }
+                })
+                user.save();
+            }
+        })
+
         app.listen(4005, () => {
             console.log('Listening on port 3000');
         });
