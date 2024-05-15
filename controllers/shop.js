@@ -48,22 +48,31 @@ exports.getProduct = (req, res) => {
     )
 }
 
-exports.postCart =(req,res)=>{
-  const prodId = req.body.productId
-
-  Product.findById(prodId)
-  .then(product=>{
-   req.user.addTocart(product)
-   res.redirect('/')
-  })
+exports.postCart = (req, res) => {
+    const prodId = req.body.productId;
+    Product.findById(prodId)
+        .then(product => {
+            req.user.addTocart(product);
+            res.redirect('/cart');
+        });
 }
 
-exports.getcart = async (req, res)=>{
-  const userPrducts = await req.user.populate('cart.items.productId')
+exports.getCart = async (req, res) => {
+    const user = await req.user.populate('cart.items.productId');
+    res.render('shop/cart', {
+        pageTitle: 'Cart',
+        path: '/cart',
+        products: user.cart.items
+    });
+}
 
-  res.render('shop/cart',{
-    pageTitle:'cart',
-    path:'/cart',
-    products:userPrducts
-  })
+exports.postCartDeleteProduct = (req, res) => {
+    const prodId = req.body.productId;
+    req.user.removeFromCart(prodId)
+        .then(result => {
+            console.log(result);
+            res.redirect('/cart');
+        }).catch(err => {
+            console.log(err);
+        })
 }
