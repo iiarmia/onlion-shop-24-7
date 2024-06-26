@@ -1,5 +1,6 @@
 const { path } = require('express/lib/application');
 const Product = require('../models/product');
+const Order = require('../models/order')
 
 
 
@@ -75,4 +76,21 @@ exports.postCartDeleteProduct = (req, res) => {
         }).catch(err => {
             console.log(err);
         })
+}
+
+exports.PostOrder = (req,res)=>{
+    req.user.populate('cart.items.productId')
+    .then(user=>{
+        const Products = user.cart.items.map(i=>{
+            return {quantity:i.quantity,product:i.productId}
+        });
+        const order = new Order({
+            user:{
+                name:req.user.name,
+                userIde:req.user
+            },
+            products:Products
+        })
+        return order.save()
+    })
 }
