@@ -2,22 +2,31 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-  <main>
-    <ul class="cart__item-list">
-      <% products.forEach(p => { %>
-      <li class="cart__item">
-        <div>
-          <img src="<%= p.productId.imageUrl %>" class="img-thumbnail" alt="" />
-        </div>
-        <h1><%= p.productId.title %></h1>
-        <h2><%= p.quantity %></h2>
-        <form action="/cart-delete-item" method="post">
-          <button type="submit" class="btn btn-danger">حذف</button>
-          <input type="hidden" value="<%= p.productId._id %>" name="productId" />
+  <ul class="cart__item-list">
+    <% products.forEach(p => { %>
+    <li class="cart__item">
+      <div>
+        <img src="<%= p.productId.imageUrl %>" class="img-thumbnail" alt="" />
+      </div>
+      <h1><%= p.productId.title %></h1>
+      <h2><%= p.quantity %></h2>
+      <form action="/cart-delete-item" method="post">
+        <button type="submit" class="btn btn-danger">حذف</button>
+        <input type="hidden" value="<%= p.productId._id %>" name="productId" />
+      </form>
+    </li>
+    <% }) %>
+  </ul>
+
+  <div class="row">
+    <div class="container">
+      <div class="centered">
+        <form action="/create-order" method="post">
+          <button type="submit" class="btn btn-info">سفارش محصولات</button>
         </form>
-      </li>
-      <% }) %>
-    </ul>
+      </div>
+    </div>
+  </div>
 </main>
 
 <%- include('../includes/end.ejs') %>
