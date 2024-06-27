@@ -81,15 +81,15 @@ exports.postCartDeleteProduct = (req, res) => {
 exports.PostOrder = (req,res)=>{
     req.user.populate('cart.items.productId')
     .then(user=>{
-        const Products = user.cart.items.map(i=>{
+        const products = user.cart.items.map(i=>{
             return {quantity:i.quantity,product:i.productId}
         });
         const order = new Order({
             user:{
                 name:req.user.name,
-                userIde:req.user
+                userId:req.user
             },
-            products:Products
+            products:products
         })
         return order.save()
     })
