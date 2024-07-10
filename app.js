@@ -15,7 +15,7 @@ app.set('views', 'views');
 
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
-const user = require('./models/user');
+const authRouter = require('./routes/auth')
 
 
 
@@ -37,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
  })
 app.use('/admin', adminRouter);
 app.use(shopRouter);
+app.use(authRouter)
 
 
 mongoose.connect('mongodb://localhost/Shop')
