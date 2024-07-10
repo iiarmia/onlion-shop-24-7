@@ -1,7 +1,6 @@
 const { path } = require('express/lib/application');
 const Product = require('../models/product');
-const Order = require('../models/order');
-const res = require('express/lib/response');
+const CookieParser = require('../util/cookieParser')
 
 
 
@@ -19,13 +18,15 @@ exports.getProducts = (req, res) => {
 
 
 exports.getIndex = (req, res) => {
-
+ 
+    const isLoggendin = CookieParser(req)
+ 
     Product.find().then(products => {
         res.render('shop/index', {
             path: '/',
             pageTitle: 'Shop',
             prods: products,
-            isAuthenticated: req.isLoggedIn
+            isAuthenticated: isLoggendin['loggedIn']
         });
     }).catch(err => {
         console.log(err);
