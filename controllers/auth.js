@@ -1,18 +1,21 @@
-const { path } = require("express/lib/application")
-const CookieParser = require('../util/cookieParser')
+exports.getLogin = (req, res) => {
 
-exports.getlogin = (req,res)=>{
+  req.session.isLoggedIn;
 
-   const isLoggendin = CookieParser(req)
+  res.render('auth/login', {
+      path: '/Login',
+      pageTitle: 'ورود',
+      isAuthenticated: false
+  });
+}
+exports.postLogin = (req, res) => {
+  req.session.isLoggedIn = true;
+  res.redirect('/');
+}
 
-  res.render('auth/login',{
-    path:'/Login',
-    pageTitle:'ورود',
-    isAuthenticated:isLoggendin['loggedIn']
-  })
-};
-
-exports.postlogin = (req,res)=>{
-  res.setHeader('Set-Cookie','loggedIn=true')
-  res.redirect('/')
+exports.postLogOut = (req,res) =>{
+   req.session.destroy((err)=>{
+    console.log(err)
+    res.redirect('/')
+   })
 }
