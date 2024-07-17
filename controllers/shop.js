@@ -1,6 +1,7 @@
 const { path } = require('express/lib/application');
 const Product = require('../models/product');
-const CookieParser = require('../util/cookieParser')
+const Order = require('../models/order');
+const res = require('express/lib/response');
 
 
 
@@ -11,22 +12,20 @@ exports.getProducts = (req, res) => {
                 prods: products,
                 pageTitle: 'All Products',
                 path: '/products',
-                isAuthenticated: req.isLoggedIn
+                isAuthenticated:req.session.isLoggedIn
             });
         })
 }
 
 
 exports.getIndex = (req, res) => {
- 
-    const isLoggendin = CookieParser(req)
- 
+
     Product.find().then(products => {
         res.render('shop/index', {
             path: '/',
             pageTitle: 'Shop',
             prods: products,
-            isAuthenticated: isLoggendin['loggedIn']
+            isAuthenticated:req.session.isLoggedIn
         });
     }).catch(err => {
         console.log(err);
@@ -44,7 +43,7 @@ exports.getProduct = (req, res) => {
                 product: product,
                 pageTitle: product.title,
                 path: '/products',
-                isAuthenticated: req.isLoggedIn
+                isAuthenticated:req.session.isLoggedIn
             });
         }
     ).catch(
@@ -68,7 +67,7 @@ exports.getCart = async (req, res) => {
     res.render('shop/cart', {
         pageTitle: 'Cart',
         path: '/cart',
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated:req.session.isLoggedIn,
         products: user.cart.items
     });
 }
@@ -120,7 +119,7 @@ exports.getOrder = (req,res)=>{
         pageTitle:"Orders",
         path:"/orders",
         orders:orders,
-        isAuthenticated: req.isLoggedIn
+        isAuthenticated:req.session.isLoggedIn
     });  
     }).catch(err =>{
         console.log(err)
