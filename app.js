@@ -9,7 +9,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const User = require('./models/user')
 
-const MONGODB_URI = 'mongodb://localhost/Shop';
+const MONGODB_URI = 'mongodb://localhost/shopp';
 
 const app = express();
 const store = new MongoDBStore({
@@ -58,19 +58,6 @@ app.use(authRouter)
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
-  
-        User.findOne().then(user =>{
-            if(!user){
-                const user = new User({
-                    name: 'Max',
-                    email: 'max@max.com',
-                    cart: {
-                        items: []
-                    }
-                })
-                user.save();
-            }
-        })
 
         app.listen(4005, () => {
             console.log('Listening on port 3000');
