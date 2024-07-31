@@ -7,33 +7,38 @@
       <li class="nav-item">
         <a class="nav-link  <%= path ==='/products' ? 'active' : '' %> " href="/products">محصولات</a>
       </li>
+    
       <% if(isAuthenticated) { %> 
+        <li class="nav-item">
+          <a class="nav-link <%= path ==='/cart' ? 'active' : '' %>" href="/cart">سبد خرید</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/orders">سفارشات</a>
+        </li>
       <li class="nav-item">
         <a class="nav-link <%= path ==='/admin/add-product' ? 'active' : '' %> " href="/admin/add-product">افزودن محصول</a>
       </li>
       <li class="nav-item">
         <a class="nav-link <%= path ==='/admin/products' ? 'active' : '' %>" href="/admin/products">محصولات ادمین</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link <%= path ==='/cart' ? 'active' : '' %>" href="/cart">سبد خرید</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/orders">سفارشات</a>
-      </li>
       <% } %> 
     </ul>
   </div>
-  <% if (!isAuthenticated) { %>
-    <ul class="navbar-nav">
+  <ul class="navbar-nav">
+    <% if(!isAuthenticated) { %> 
     <li class="nav-item">
       <a class="nav-link" href="/login">ورود</a>
     </li>
-  <% }else{ %>
+    <li class="nav-item">
+      <a class="nav-link" href="/signup">ثبت نام</a>
+    </li>
+<% } else { %> 
     <li class="nav-item">
       <form action="/logout" method="post">
-       <button class="nav-link" type="submit">خروج</button> 
+        <button class="nav-link" id="navBtn" type="submit">خروج</button>
       </form>
-     </li>
-     <% } %>
+    
+    </li>
+    <% } %> 
   </ul>
 </nav>
