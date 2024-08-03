@@ -7,7 +7,7 @@
       action="/admin/<% if(editing){  %>edit-product<% } else { %>add-product<% } %>"
       method="post"
     >
-    <input type="hidden" name="_csrf" value="<% csrfToken%>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="form-group">
         <label for="title">عنوان</label>
         <input
@@ -44,7 +44,7 @@
       <div class="form-group">
         <label for="title">توضیحات</label>
         <textarea class="form-control" name="description" cols="30" rows="10">
-        <% if(editing) { %> <%=  product.description %> <% } %>
+<% if(editing) { %><%=product.description%> <% } %>
       </textarea
         >
       </div>

@@ -10,7 +10,7 @@ const csrf = require('csurf');
 
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb://localhost/Shop';
+const MONGODB_URI = 'mongodb://localhost/shoppp';
 
 const app = express();
 const store = new MongoDBStore({

@@ -27,7 +27,7 @@
   <ul class="navbar-nav">
     <% if(!isAuthenticated) { %> 
     <li class="nav-item">
-      <input type="hidden" name="_csrf" value="<% csrfToken%>">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <a class="nav-link" href="/login">ورود</a>
     </li>
     <li class="nav-item">
@@ -36,7 +36,7 @@
 <% } else { %> 
     <li class="nav-item">
       <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" value="<% csrfToken%>"> 
+        <input type="hidden"  name="_csrf" value="<%= csrfToken %>">
         <button class="nav-link" id="navBtn" type="submit">خروج</button>
       </form>
     
