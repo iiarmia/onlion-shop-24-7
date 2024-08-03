@@ -11,7 +11,8 @@ exports.getLogin = (req, res) => {
     res.render('auth/login', {
         path: '/Login',
         pageTitle: 'ورود',
-        isAuthenticated: false
+        isAuthenticated: false,
+        csrfProtection : req.csrfToken()
     });
 }
 
@@ -55,7 +56,8 @@ exports.getSignup = (req, res) => {
     res.render('auth/singup', {
         path: '/singup',
         pageTitle: 'ثبت نام',
-        isAuthenticated: false
+        isAuthenticated: false,
+        csrfProtection : req.csrfToken()
     });
 }
 

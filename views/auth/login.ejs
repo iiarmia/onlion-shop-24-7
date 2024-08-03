@@ -11,6 +11,8 @@
 
               <form action="/login" method="post">
 
+                <input type="hidden" name="_csrf" value="<% csrfProtection%>">
+
                 <div class="form-outline mb-4">
                     <input name="email" type="email" id="typeEmailX-2" class="form-control form-control-lg" placeholder="نام کاربری یا ایمیل خود را وارد کنید">
                   </div>
