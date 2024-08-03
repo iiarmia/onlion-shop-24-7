@@ -11,10 +11,10 @@ exports.getLogin = (req, res) => {
     res.render('auth/login', {
         path: '/Login',
         pageTitle: 'ورود',
-        isAuthenticated: false,
-        csrfProtection : req.csrfToken()
     });
 }
+
+
 
 exports.postLogin = (req, res) => {
 
@@ -45,6 +45,9 @@ exports.postLogin = (req, res) => {
     )
 }
 
+
+
+
 exports.postLogout = (req, res) => {
 
     req.session.destroy((err) => {
@@ -56,10 +59,9 @@ exports.getSignup = (req, res) => {
     res.render('auth/singup', {
         path: '/singup',
         pageTitle: 'ثبت نام',
-        isAuthenticated: false,
-        csrfProtection : req.csrfToken()
     });
 }
+
 
 exports.postSignup = (req, res) => {
     const email = req.body.email;

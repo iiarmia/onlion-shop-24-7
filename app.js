@@ -8,57 +8,63 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 
 
-const User = require('./models/user')
+const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb://localhost/shopp';
+const MONGODB_URI = 'mongodb://localhost/Shop';
 
 const app = express();
 const store = new MongoDBStore({
     uri: MONGODB_URI,
     collection: 'session'
 });
-
 const csrfProtection = csrf();
+
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
-const authRouter = require('./routes/auth')
+const authRouter = require('./routes/auth');
 
 
 
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'my secret',
     resave: false,
     saveUninitialized: false,
-    store:store
+    store: store
 }));
-
-app.use(csrfProtection)
-
-
-
-app.use(express.static(path.join(__dirname, 'public')));
-
- app.use((req,res,next)=>{
-    if(!req.session.user){
-        return next()
+app.use(csrfProtection);
+app.use((req, res, next) => {
+    if (!req.session.user) {
+        return next();
     }
-    User.findById(req.session.user._id).then(user=>{
-        req.user=user;
-        next()
-    }).catch(err=>{
+    User.findById(req.session.user._id).then(user => {
+        req.user = user;
+        next();
+    }).catch(err => {
         console.log(err);
     })
- })
+});
+
+
+app.use((req,res,next)=>{
+
+    res.locals.isAuthenticated=req.session.isLoggedIn;
+    res.locals.csrfToken=req.csrfToken();
+    next();
+});
+
+
 app.use('/admin', adminRouter);
 app.use(shopRouter);
-app.use(authRouter)
+app.use(authRouter);
+
 
 
 mongoose.connect(MONGODB_URI)
@@ -67,10 +73,9 @@ mongoose.connect(MONGODB_URI)
         app.listen(4000, () => {
             console.log('Listening on port 3000');
         });
-        
     })
     .catch(
-        err=>{
+        err => {
             console.log(err);
         }
     )

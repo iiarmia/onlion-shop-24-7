@@ -26,6 +26,7 @@
       <div class="card__actions">
         <a href="/products/<%= product._id %>" class="btn btn-light">جزئیات</a>
         <% if (isAuthenticated){ %>
+          <input type="hidden" name="_csrf" value="<% csrfToken%>">
         <%- include('../includes/add-to-cart.ejs',{product:product})  %> 
         <% } %>
       </div>
