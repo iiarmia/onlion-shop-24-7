@@ -5,12 +5,20 @@ const User = require('../models/user');
 
 
 exports.getLogin = (req, res) => {
+    let message = req.flash('error')
 
+    if (message.length > 0 ){
+        message = message[0]
+    }else{
+        message = null
+    }
 
 
     res.render('auth/login', {
         path: '/Login',
         pageTitle: 'ورود',
+        errorMessage: message,
+        successMessage:req.flash('success')
     });
 }
 
@@ -26,6 +34,7 @@ exports.postLogin = (req, res) => {
     }).then(
         user => {
             if (!user) {
+                req.flash('error','ایمیل شما اشتباه است!');
                 return res.redirect('/login');
             }
             bcrypt.compare(password, user.password).then(isMatch => {
@@ -38,6 +47,7 @@ exports.postLogin = (req, res) => {
                         res.redirect('/');
                     });
                 }
+                req.flash('error', 'پسورد شما اشتباه است !');
                 res.redirect('/login');
             })
 
@@ -59,6 +69,7 @@ exports.getSignup = (req, res) => {
     res.render('auth/singup', {
         path: '/singup',
         pageTitle: 'ثبت نام',
+        errorMessage: req.flash('error')
     });
 }
 
@@ -70,6 +81,7 @@ exports.postSignup = (req, res) => {
     User.findOne({ email: email })
       .then(userDoc => {
         if (userDoc) {
+          req.flash('error','ایمیل با همین نام در سایت ثبت نام کرده است لطفا با ایمیل دیگر ثبت نام کنید')
           return res.redirect('/signup');
         }
         return bcrypt
@@ -83,6 +95,7 @@ exports.postSignup = (req, res) => {
             return user.save();
           })
           .then(result => {
+            req.flash('success','ثبت نام شما با موفقیت انجام شد میتوانید وارد شوید')
             res.redirect('/login');
           });
       })
