@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
-
-
+const sendEmail = require('../util/email')
 const User = require('../models/user');
 
 
@@ -95,7 +94,8 @@ exports.postSignup = (req, res) => {
             return user.save();
           })
           .then(result => {
-            req.flash('success','ثبت نام شما با موفقیت انجام شد میتوانید وارد شوید')
+            req.flash('success','ثبت نام شما با موفقیت انجام شد میتوانید وارد شوید');
+            sendEmail({subject:'ثبت نام', text:'ثبت نام با موفقیت انجام شد'})
             res.redirect('/login');
           });
       })
