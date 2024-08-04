@@ -7,6 +7,16 @@
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
           <div class="card shadow-2-strong" style="border-radius: 1rem">
             <div class="card-body p-5 text-center">
+              
+              <% if(errorMessage){ %>
+                <div class="alert alert-danger"><%= errorMessage %></div>
+                <% } %>
+    
+                
+                <% if(successMessage[0]){ %>
+                  <div class="alert alert-success"><%= successMessage[0] %></div>
+                  <% } %>
+ 
               <h3 class="mb-5">ورود</h3>
 
               <form action="/login" method="post">
