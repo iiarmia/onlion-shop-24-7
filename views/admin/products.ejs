@@ -2,61 +2,37 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-  <div class="container">
-    <form
-      action="/admin/<% if(editing){  %>edit-product<% } else { %>add-product<% } %>"
-      method="post"
-    >
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <div class="form-group">
-        <label for="title">عنوان</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          name="title"
-          placeholder="نام محصول را وارد کنید"
-          value="<% if(editing) { %> <%=  product.title %> <% } %>"
-        />
+  <% if(prods.length > 0) { %>
+  <div class="grid">
+    <% for(let product of prods) { %>
+    <article class="card product-item">
+      <header class="card__header">
+        <h1 class="product__title"><%= product.title %></h1>
+      </header>
+      <div class="card__image">
+        <img src="<%= product.imageUrl %> " alt="Product Title" />
       </div>
-      <div class="form-group">
-        <label for="title">قیمت</label>
-        <input
-          type="number"
-          class="form-control"
-          id="price"
-          name="price"
-          placeholder="قیمت محصول را وارد کنید"
-          value="<% if(editing) {%><%=product.price%><%}%>"
-        />
+      <div class="card__content">
+        <h2 class="product__price"><%= product.price %></h2>
+        <p class="product__description"><%= product.description %></p>
       </div>
-      <div class="form-group">
-        <label for="title">آدرس عکس</label>
-        <input
-          type="text"
-          class="form-control"
-          id="imageUrl"
-          name="imageUrl"
-          placeholder="عکس محصول را وارد کنید"
-          value="<% if(editing) { %> <%=  product.imageUrl %> <% } %>"
-        />
-      </div>
-      <div class="form-group">
-        <label for="title">توضیحات</label>
-        <textarea class="form-control" name="description" cols="30" rows="10">
-<% if(editing) { %><%=product.description%> <% } %>
-      </textarea
+      <div class="card__actions">
+        <a
+          href="/admin/edit-product/<%= product._id %>?edit=true"
+          class="btn btn-warning"
+          >ویرایش</a
         >
+        <form action="/admin/delete-product" method="post">
+          <input type="hidden" value="<%= product._id %>" name="productId">
+          <button class="btn btn-danger" type="submit">حذف</button>
+        </form>
       </div>
-      <% if(editing) { %>
-      <input type="hidden" value="<%= product._id %>" name="productId" />
-      <% } %>
-
-      <button type="submit" class="btn btn-primary">
-        <% if(editing) { %> ویرایش محصول <% }else { %>افزودن محصول <% } %>
-      </button>
-    </form>
+    </article>
+    <% } %>
   </div>
+  <% } else { %>
+  <h1>محصولی یافت نشد ... !!!</h1>
+  <% } %>
 </main>
 
 <%- include('../includes/end.ejs') %>
