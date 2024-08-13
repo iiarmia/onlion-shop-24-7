@@ -73,7 +73,7 @@ mongoose.connect(MONGODB_URI)
     .then(result => {
 
         app.listen(4000, () => {
-            console.log('Listening on port 3000');
+            console.log("url:" + 'http://localhost:4000');
         });
     })
     .catch(
