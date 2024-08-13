@@ -14,7 +14,7 @@ const sendEmail = async (option)=>{
         from:'armia.iiarmia@gmail.com',
         to:'test@gmail.com',
         subject:option.subject,
-        text:option.text
+        html:`<h1> ${option.text} </h1>`
       }
 
       await transport.sendMail(mailOption)
