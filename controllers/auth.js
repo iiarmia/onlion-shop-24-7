@@ -21,8 +21,6 @@ exports.getLogin = (req, res) => {
     });
 }
 
-
-
 exports.postLogin = (req, res) => {
 
     const email = req.body.email;
@@ -54,9 +52,6 @@ exports.postLogin = (req, res) => {
     )
 }
 
-
-
-
 exports.postLogout = (req, res) => {
 
     req.session.destroy((err) => {
@@ -71,7 +66,6 @@ exports.getSignup = (req, res) => {
         errorMessage: req.flash('error')
     });
 }
-
 
 exports.postSignup = (req, res) => {
     const email = req.body.email;
@@ -95,7 +89,11 @@ exports.postSignup = (req, res) => {
           })
           .then(result => {
             req.flash('success','ثبت نام شما با موفقیت انجام شد میتوانید وارد شوید');
-            sendEmail({subject:'ثبت نام', text:'ثبت نام با موفقیت انجام شد'})
+            sendEmail({
+             subject:'ثبت نام',
+             text:'ثبت نام با موفقیت انجام شد',
+             userEmail: email
+            })
             res.redirect('/login');
           });
       })
@@ -103,4 +101,12 @@ exports.postSignup = (req, res) => {
         console.log(err);
       });
 
+}
+
+exports.getReset = (req, res) => {
+
+    res.render('auth/resetpp', {
+        path: '/resetpp',
+        pageTitle: 'بازیابی رمز عبور'
+    })
 }
