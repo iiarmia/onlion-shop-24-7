@@ -6,12 +6,12 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
-const flash = require('connect-flash')
+const flash=require('connect-flash');
 
 
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb://localhost/shoppp';
+const MONGODB_URI = 'mongodb://localhost/onlineShop';
 
 const app = express();
 const store = new MongoDBStore({
@@ -41,7 +41,7 @@ app.use(session({
     store: store
 }));
 app.use(csrfProtection);
-app.use(flash())
+app.use(flash());
 app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
@@ -71,9 +71,8 @@ app.use(authRouter);
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
-
         app.listen(4000, () => {
-            console.log("url:" + 'http://localhost:4000');
+            console.log("URL :"+'http://localhost:4000/');
         });
     })
     .catch(

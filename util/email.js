@@ -1,23 +1,26 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
 
-const sendEmail = async (option)=>{
+const sendEmail = async (option) => {
+
     var transport = nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
+        host: "smtp.mailtrap.io",
         port: 2525,
         auth: {
-          user: "e450e4cc25a4c1",
-          pass: "d7894e4ddbf547"
+            user: "e5f55cf49158ed",
+            pass: "7e18f7cc6c612d"
         }
-      });
+    });
 
-      const mailOption = {
-        from:'armia.iiarmia@gmail.com',
-        to:'test@gmail.com',
-        subject:option.subject,
-        html:`<h1> ${option.text} </h1>`
-      }
+    const mailOption = {
+        from: 'armia@gmail.com',
+        to:option.userEmail,
+        subject: option.subject,
+        html:option.html
+    }
 
-      await transport.sendMail(mailOption)
-}
 
-module.exports = sendEmail
+    await transport.sendMail(mailOption);
+
+};
+
+module.exports = sendEmail;
