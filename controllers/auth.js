@@ -112,10 +112,16 @@ exports.postSignup = (req, res) => {
 }
 
 exports.getReset = (req, res) => {
-
+    let message = req.flash('error');
+    if(message.length > 0){
+        message = message[0];
+    }else{
+        message = null;
+    }
     res.render('auth/reset', {
         path: '/reset',
-        pageTitle: 'بازیابی رمز عبور'
+        pageTitle: 'بازیابی رمز عبور',
+        errorMessage:message,
     })
 }
 
@@ -160,3 +166,35 @@ exports.postReset = (req, res) => {
 
 
 };
+
+exports.getResetPassword = (req, res) => {
+
+    const token = req.params.token;
+    User.findOne({
+        resetToken: token,
+    }).then(user => {
+
+        console.log(user);
+
+        let message = req.flash('error');
+        if (message.length > 0) {
+            message = message[0];
+        } else {
+            message = null;
+        }
+        res.render('auth/new-password', {
+            path: '/new-password',
+            pageTitle: 'رمز عبور جدید',
+            errorMessage: message,
+            userId: user._id.toString(),
+            passwordToken: token
+        })
+
+    }).catch(err => {
+        console.log(err);
+    })
+
+
+
+}
+
