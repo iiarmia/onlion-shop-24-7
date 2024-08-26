@@ -127,44 +127,39 @@ exports.getReset = (req, res) => {
 
 exports.postReset = (req, res) => {
 
-    crypto.randomBytes(32, (err, buf) => {
-
+    crypto.randomBytes(32, (err, buffer) => {
         if (err) {
             console.log(err);
             return res.redirect('/reset');
         }
-        const token = buf.toString('hex');
+        const token = buffer.toString('hex');
         User.findOne({
-            email: req.body.email
-        }).then(
-            user => {
-
+                email: req.body.email
+            })
+            .then(user => {
                 if (!user) {
-                    req.flash('error', 'ایمیلی در سایت با این نام وجود ندارد لطفا ایمیل دیگری وارد کنید')
+                    req.flash('error', 'کاربری با این ایمیل یافت نشد لطفا ایمیل دیگری را امتحان کنید!');
                     return res.redirect('/reset');
                 }
                 user.resetToken = token;
                 user.ExpiredDateresetToken = Date.now() + 3600000;
                 return user.save();
-            }
-        ).then(
-            result => {
-                res.redirect('/');
-                sendEmail({
-                    userEmail: req.body.email,
-                    subject: 'بازیابی رمز عبور',
-                    html: `<p>درخواست بازیابی رمز عبوز</p>
+
+            }).then(
+                result => {
+                    res.redirect('/');
+                    sendEmail({
+                        userEmail: req.body.email,
+                        subject: 'بازیابی رمز عبور',
+                        html: `<p>درخواست بازیابی رمز عبوز</p>
                     <p>برای بازیابی رمز عبور <a href="http://localhost:3001/reset/${token}" >این لینک را</a> کلیک کنید </p>
                     `
-                });
-            }
-        );
-
-
+                    });
+                }
+            ).catch(err => {
+                console.log(err);
+            });
     });
-
-
-
 };
 
 exports.getResetPassword = (req, res) => {
@@ -198,3 +193,29 @@ exports.getResetPassword = (req, res) => {
 
 }
 
+exports.postResetPassword = (req , res) =>{
+  const newPassword = req.params.newPassword;
+  const userId  = req.body.userId;
+  const passwordToken = req.body.passwordToken
+  let resetUser
+
+  User.findOne({
+    resetToken:passwordToken,
+    _id:userId
+  }).then(user =>{
+   resetUser = user;
+   return bcrypt.hash(newPassword,12);
+  }).then(hashedPassword=>{
+    resetUser.password = hashedPassword;
+    resetUser.resetToken = undefined;
+    resetUser.ExpiredDateresetToken = undefined
+    return resetUser.save()
+  }).then(result =>{
+    console.log(result)
+    res.redirect('/login')
+  }).catch(
+    err =>{
+        console.log(err)
+    }
+  )
+}
