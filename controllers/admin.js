@@ -3,7 +3,9 @@ const Product = require('../models/product');
 
 exports.getProducts = (req, res) => {
 
-    Product.find()
+    Product.find(
+        {userId : req.user._id}
+    )
         .then(
             products => {
                 res.render('admin/products', {
@@ -91,21 +93,30 @@ exports.postEditProduct = (req, res) => {
 
     Product.findById(prodId)
         .then(product => {
+
+if(product.userId.toString() !== req.user._id.toString()){
+    return res.redirect('/');
+}
             product.title = updatedTitle;
             product.price = updatedPrice;
             product.imageUrl = updatedImageUrl;
             product.description = updatedDesc;
-            return product.save();
-        }).then(result => {
+            return product.save().then(result => {
             console.log("Updated Product...");
             res.redirect('/');
         });
+        }).catch(err=>{
+            console.log(err)
+        })
 
 }
 
 exports.postDeleteProduct = (req, res) => {
     const prodId = req.body.productId;
-    Product.findByIdAndRemove(prodId).then(() => {
+    Product.deleteOne({
+        _id:prodId,
+        userId:req.user._id
+    }).then(() => {
         console.log("Product Removed");
         res.redirect('/admin/products');
     }).catch(err => {
