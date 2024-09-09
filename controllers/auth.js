@@ -152,7 +152,7 @@ exports.postReset = (req, res) => {
                         userEmail: req.body.email,
                         subject: 'بازیابی رمز عبور',
                         html: `<p>درخواست بازیابی رمز عبوز</p>
-                    <p>برای بازیابی رمز عبور <a href="http://localhost:3001/reset/${token}" >این لینک را</a> کلیک کنید </p>
+                    <p>برای بازیابی رمز عبور <a href="http://localhost:4000/reset/${token}" >این لینک را</a> کلیک کنید </p>
                     `
                     });
                 }
