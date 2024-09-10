@@ -15,7 +15,18 @@ router.post('/logout',authController.postLogout);
 
 router.get('/signup',authController.getSignup);
 
-router.post('/signup',check('email').isEmail(),authController.postSignup);
+router.post('/signup',
+    check('email')
+    .isEmail()
+    .withMessage('لطفا یک ایمیل معتبر رو وارد کنید ')
+    .custom((value , {req})=>{
+        if(value === 'test@gmail.com'){
+            throw new Error('شما حق ورود به وب سایت رو به وب سایت رو ندارید')
+        }
+
+        return true
+    })
+    ,authController.postSignup);
 
 router.get('/reset',authController.getReset);
 
