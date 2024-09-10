@@ -7,13 +7,13 @@
         <div class="card shadow-2-strong" style="border-radius: 1rem">
           <div class="card-body p-5 text-center">
 
-            <% if(errorMessage[0]){ %>
-              <div class="alert alert-danger"><%= errorMessage[0] %></div>
+            <% if(errorMessage){ %>
+              <div class=" alert-danger"><%= errorMessage %></div>
               <% } %>
 
             <h3 class="mb-5">ثبت نام</h3>
 
-            <form action="/signup" method="post">
+            <form action="/signup" method="post" novalidate>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <div class="form-outline mb-4">
                 <input
