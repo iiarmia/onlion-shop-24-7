@@ -2,8 +2,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const sendEmail = require('../util/email');
 const crypto = require('crypto');
-
-
+const {validationResult} = require('express-validator')
 
 exports.getLogin = (req, res) => {
 
@@ -74,6 +73,17 @@ exports.postSignup = (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    const errors = validationResult(req)
+
+     if(!errors.isEmpty()){
+        console.log(errors.array());
+        return res.status(422).render('auth/singup', {
+            path: '/singup',
+            pageTitle: 'ثبت نام',
+            errorMessage: errors.array()[0].msg
+        });
+     }
+
     User.findOne({
             email: email
         })
